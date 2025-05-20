@@ -7,6 +7,7 @@ import {
 } from "../email/index.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
+import crypto from "crypto";
 import { generateVerificationToken } from "../utils/generateVerificationToken.js";
 import { sendApiResponse } from "../utils/sendApiResponse.js";
 import { validationAuth } from "../utils/validation.js";
@@ -204,6 +205,7 @@ export const verifyEmail = async (req, res) => {
 export const forgetPassword = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(email);
     const error = validationAuth({ email });
     if (error) {
       sendApiResponse(res, {
