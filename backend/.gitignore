@@ -1,0 +1,27 @@
+# node modules
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: Mac OS + Windows files
+*.log
