@@ -66,3 +66,56 @@ export const register = async (req, res) => {
     return;
   }
 };
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const error = validationAuth({ email, password });
+    if (error) {
+      return sendApiResponse(res, {
+        status: 400,
+        message: error.message,
+        success: false,
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return sendApiResponse(res, {
+        status: 404,
+        message: `User not found`,
+        success: false,
+      });
+    }
+
+    const isPasswordMatch = await bcryptjs.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return sendApiResponse(res, {
+        status: 401,
+        message: `Invalid credentials`,
+        success: false,
+      });
+    }
+
+    // ✅ Set JWT cookie
+    generateTokenAndSetCookie(res, user._id.toString());
+
+    // ✅ Success response
+    sendApiResponse(res, {
+      status: 200,
+      message: "user logged in",
+      success: true,
+      data: {
+        _id: user._id,
+        email: user.email,
+        username: user.username,
+        isVerified: user.isVerified,
+        lastLogin: user.lastLogin,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: `server error` });
+  }
+};
