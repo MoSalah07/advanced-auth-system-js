@@ -173,7 +173,8 @@ export const verifyEmail = async (req, res) => {
       });
       return;
     }
-    user.isVerified = false;
+
+    user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpiresAt = undefined;
     await user.save();
